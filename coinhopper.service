@@ -1,0 +1,19 @@
+[Unit]
+Description=coinhopper
+After=syslog.target network.target
+
+[Service]
+User=percolant
+Group=sudo
+WorkingDirectory=/opt/coinhopper
+ExecStart=bash -c "/opt/coinhopper/venv/bin/coinhopper"
+Environment="TELEGRAM_API_TOKEN=..."
+Environment="TELEGRAM_USER_ID=..."
+Environment="TELEGRAM_CHAT_ID=..."
+Environment="BINANCE_API_LABEL=coinhopper"
+Environment="BINANCE_API_KEY=..."
+Environment="BINANCE_API_SECRET=..."
+Environment="COINS=BTC,ETH,ADA,BNB,XRP,DOT,ICP,BCH,UNI,LTC,LINK,XLM,ETC,VET,COTI,SOL,EOS,MATIC,THETA,TRX,FIL,XMR,AAVE,NEO,LUNA,ATOM,XTZ,IOTA,AVAX,CAKE,KSM,MKR,ALGO,DASH,ZEC,EGLD,CHZ,SNX,SUSHI,QTUM,GRT,BAT,ENJ,BNT,CELO,STORJ,REP"
+
+[Install]
+WantedBy=multi-user.target
