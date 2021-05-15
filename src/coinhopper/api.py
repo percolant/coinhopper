@@ -42,7 +42,7 @@ def get_fiat_balance():
 def get_biggest_diff(coins):
     data = {}
     for coin in coins:
-        price, avg_price = get_coin_cur_and_avg_price(coin)
+        cur_price, avg_price = get_coin_cur_and_avg_price(coin)
         data[coin] = avg_price / cur_price
 
     filtered_data = {}
