@@ -39,7 +39,11 @@ def get_fiat_balance():
     else:
         raise Exception(f"Code {response.status_code} from Binance, {response.json()}")
 
-def get_biggest_diff(coins):
+def get_biggest_diff(coins, prec):
+    prec_norm = {}
+    for i, coin in enumerate(coins):
+        prec_norm[coin] = prec[i]
+
     data = {}
     for coin in coins:
         cur_price, avg_price = get_coin_cur_and_avg_price(coin)
@@ -57,7 +61,7 @@ def get_biggest_diff(coins):
             max = filtered_data[coin]
             result = coin
 
-    return result
+    return result, prec_norm[result]
 
 def get_coin_price(coin):
     params = {

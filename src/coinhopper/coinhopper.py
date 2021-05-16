@@ -19,6 +19,7 @@ BINANCE_API_KEY = os.getenv("BINANCE_API_KEY")
 BINANCE_API_SECRET = os.getenv("BINANCE_API_SECRET")
 BINANCE_BASEURL = 'https://api.binance.com'
 COINS = os.getenv("COINS")
+PREC = os.getenv("PREC")
 
 headers = {
     'X-MBX-APIKEY': BINANCE_API_KEY
@@ -34,8 +35,9 @@ async def run():
     while True:
         if not coin:
             fiat_balance = api.get_fiat_balance()
-            coin = api.get_biggest_diff(COINS.split(','))
-            amount_bought = api.buy(coin, fiat_balance)
+            coin, prec = api.get_biggest_diff(COINS.split(','))
+            if coin:
+                amount_bought = api.buy(coin, fiat_balance)
             if amount_bought == 0:
                 coin = None
                 await bot.send_message(
@@ -45,16 +47,16 @@ async def run():
             else:
                 await bot.send_message(
                     TELEGRAM_CHAT_ID,
-                    f"bought {amount_bought} {coin} for ${int(fiat_balance)}"
+                    f"bought {amount_bought} {coin} for ${int(float(fiat_balance))}"
                 )
         else:
             price, avg_price = api.get_coin_cur_and_avg_price(coin)
             if price > avg_price:
                 await bot.send_message(
                     TELEGRAM_CHAT_ID,
-                    'will try to sell'
+                    f'will try to sell {coin} {amount_bought}'
                 )
-                api.sell(coin, amount_bought)
+                api.sell(coin, float(f'%.{prec}f'%(amount_bought)))
                 await bot.send_message(
                     TELEGRAM_CHAT_ID,
                     'successfully sold'
