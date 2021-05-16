@@ -35,7 +35,7 @@ async def run():
     while True:
         if not coin:
             fiat_balance = api.get_fiat_balance()
-            coin, prec = api.get_biggest_diff(COINS.split(','))
+            coin, prec = api.get_biggest_diff(COINS.split(','), PREC.split(','))
             if coin:
                 amount_bought = api.buy(coin, fiat_balance)
             if amount_bought == 0:
