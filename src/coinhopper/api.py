@@ -61,7 +61,10 @@ def get_biggest_diff(coins, prec):
             max = filtered_data[coin]
             result = coin
 
-    return result, prec_norm[result]
+    if result:
+        return result, prec_norm[result]
+    else:
+        return None, None
 
 def get_coin_price(coin):
     params = {
