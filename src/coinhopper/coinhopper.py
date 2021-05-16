@@ -45,7 +45,7 @@ async def run():
             else:
                 await bot.send_message(
                     TELEGRAM_CHAT_ID,
-                    f"bought {amount_bought} {coin} for {fiat_balance}"
+                    f"bought {amount_bought} {coin} for ${int(fiat_balance)}"
                 )
         else:
             price, avg_price = api.get_coin_cur_and_avg_price(coin)
