@@ -1,6 +1,7 @@
 #!python3
 
 import os
+import time
 import logging
 import asyncio
 from aiogram import Bot, Dispatcher, executor, types
@@ -36,8 +37,10 @@ async def run():
         if not coin:
             fiat_balance = api.get_fiat_balance()
             coin, prec = api.get_biggest_diff(COINS.split(','), PREC.split(','))
+            amount_bought = 0
             if coin:
                 amount_bought = api.buy(coin, fiat_balance)
+            time.sleep(15)
             if amount_bought == 0:
                 coin = None
                 await bot.send_message(
@@ -52,20 +55,13 @@ async def run():
         else:
             price, avg_price = api.get_coin_cur_and_avg_price(coin)
             if price > avg_price:
-                await bot.send_message(
-                    TELEGRAM_CHAT_ID,
-                    f'will try to sell {coin} {amount_bought}'
-                )
                 api.sell(coin, float(f'%.{prec}f'%(amount_bought)))
-                await bot.send_message(
-                    TELEGRAM_CHAT_ID,
-                    'successfully sold'
-                )
-                coin = None
+                time.sleep(15)
                 await bot.send_message(
                     TELEGRAM_CHAT_ID,
                     f"sold {amount_bought} {coin}"
                 )
+                coin = None
         await asyncio.sleep(900)
 
 def main():
